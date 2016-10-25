@@ -5,43 +5,50 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   TouchableHighlight,
-  ActivityIndicator,
-  TextInput
+  BackAndroid
 } from 'react-native';
 
-import {wsWeather} from '../../constants/home.constants';
+import { wsWeather } from '../../constants/home.constants';
 
 export default class Second extends Component {
-    constructor(context, props) {
-        super(context, props);
-        this._redirect = this._redirect.bind(this);
+  constructor(context, props) {
+    super(context, props);
+    this.state = {
+      saludos: ['Hallo ',
+        'Hello ',
+        'Konnichiwa',
+        'Ni Hao',
+        'Salut',
+        'Hola ']
     }
+    this._redirect = this._redirect.bind(this);
+  }
+  componentWillMount() {
+    BackAndroid.addEventListener('hardwareBackPress',  () => {
+      this._redirect();
+      return true;
+    });
+  }
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-         {['Hallo ',
-            'Hello ',
-            'Konnichiwa',
-            'Ni Hao',
-            'Salut',
-            'Hola '].map((saludo, index)=> {
-             return <Text key={index}>{saludo} {this.props.name}{'\n'}</Text>
-         })}
+          {this.state.saludos.map((saludo, index) => {
+            return <Text key={index}>{saludo} {this.props.name}{'\n'}</Text>
+          })}
         </Text>
-         <View style={styles.button}>
-        <TouchableHighlight onPress={this._redirect}>
-                <Text  style={styles.buttonText}>{'< Regresar'}</Text>
-            </TouchableHighlight>
-      </View>
+        <View style={styles.button}>
+          <TouchableHighlight onPress={this._redirect}>
+            <Text style={styles.buttonText}>{'< Regresar'}</Text>
+          </TouchableHighlight>
+        </View>
       </View>
     );
   }
-    _redirect() {
-        this.props.navigator.push({id: 'home'});
-    }
+  _redirect() {
+    this.props.navigator.pop(1);
+  }
 }
 
 
@@ -65,13 +72,13 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   button: {
-      backgroundColor: '#ffffff',
-      padding: 5,
-      marginTop:5,
-      borderRadius: 10
+    backgroundColor: '#ffffff',
+    padding: 5,
+    marginTop: 5,
+    borderRadius: 10
   },
-   buttonText: {
-      color: '#000000'
+  buttonText: {
+    color: '#000000'
   }
 });
 
