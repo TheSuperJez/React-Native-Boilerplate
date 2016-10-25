@@ -5,49 +5,35 @@
  */
 
 import React, { Component } from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import { AppRegistry, Navigator } from 'react-native';
 
-export default class Boilerplate extends Component {
+import Home from './src/components/android/Home';
+import Second from './src/components/common/Second';
+
+class Navigation extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
-      </View>
+      <Navigator
+        configureScene={this.configureScene}
+        initialRoute={{ id: 'home' }}
+        renderScene={this.navigatorRenderScene} />
     );
+  }
+
+  navigatorRenderScene(route, navigator) {
+    switch (route.id) {
+      case 'home':
+        return (<Home navigator={navigator} {...route.passProps} title="Home" />);
+      case 'second':
+        return (<Second navigator={navigator}  {...route.passProps} title="second" />);
+    }
+  }
+  configureScene(route, routeStack) {
+    return Navigator.SceneConfigs.VerticalDownSwipeJump
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
 
-AppRegistry.registerComponent('Boilerplate', () => Boilerplate);
+
+
+AppRegistry.registerComponent('Boilerplate', () => Navigation);
