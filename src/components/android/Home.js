@@ -1,3 +1,9 @@
+/**
+ * @module Home
+ * 
+ * @author Jorge Esteban Zaragoza Salazar
+ */
+
 import request from 'superagent';
 import React, { Component } from 'react';
 import {
@@ -14,6 +20,12 @@ import {
 
 import { wsWeather } from '../../constants/home.constants';
 
+/**
+* Component que muestra el home para android.
+*
+* @class Home
+* @extends Component 
+*/
 export default class Home extends Component {
     constructor(context, props) {
         super(context, props);
@@ -76,6 +88,12 @@ export default class Home extends Component {
             </View>
         );
     }
+    /**
+	* Método que obtiene el clima de CDMX desde el api de openweather
+	*
+	* @method _getWeather
+	* @param {Event} event, Evento del botón
+	*/
     _getWeather(event) {
         var self = this;
         this.setState({ isLoading: true });
@@ -96,6 +114,11 @@ export default class Home extends Component {
                 }
             });
     }
+    /**
+	* Método que redirige y envía los datos al segundo activity
+	*
+	* @method _redirect
+	*/
     _redirect() {
         if (this.state.name !== '') {
             this.props.navigator.push({
@@ -110,7 +133,12 @@ export default class Home extends Component {
 }
 
 
-
+/**
+ * Constante para almacenar los estilos del component
+ * @property styles
+ * @public
+ * @type {Object}
+ */
 const styles = StyleSheet.create({
     container: {
         flex: 1,

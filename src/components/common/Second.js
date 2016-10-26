@@ -1,3 +1,9 @@
+/**
+ * @module Common
+ * 
+ * @author Jorge Esteban Zaragoza Salazar
+ */
+
 import request from 'superagent';
 import React, { Component } from 'react';
 import {
@@ -11,6 +17,12 @@ import {
 
 import { wsWeather } from '../../constants/home.constants';
 
+/**
+* Component que muestra el nombre ingresado en varios idiomas.
+*
+* @class Second
+* @extends Component 
+*/
 export default class Second extends Component {
   constructor(context, props) {
     super(context, props);
@@ -24,6 +36,11 @@ export default class Second extends Component {
     }
     this._redirect = this._redirect.bind(this);
   }
+  /**
+	 * Se utiliza para inicializar el comportamiento del boton de atras.
+	 *
+	 * @method componentWillMount
+	 */
   componentWillMount() {
     BackAndroid.addEventListener('hardwareBackPress',  () => {
       this._redirect();
@@ -46,13 +63,23 @@ export default class Second extends Component {
       </View>
     );
   }
+  /**
+	* Método que redirige al Home
+	*
+	* @method _redirect
+	*/
   _redirect() {
     this.props.navigator.pop(1);
   }
 }
 
 
-
+/**
+ * Constante para almacenar los estilos del component
+ * @property styles
+ * @public
+ * @type {Object}
+ */
 const styles = StyleSheet.create({
   container: {
     flex: 1,
