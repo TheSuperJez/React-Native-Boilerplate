@@ -12,7 +12,9 @@ import {
   Text,
   View,
   TouchableHighlight,
-  BackAndroid
+  BackAndroid,
+  Animated,
+  Easing
 } from 'react-native';
 
 import { wsWeather } from '../../constants/home.constants';
@@ -35,6 +37,8 @@ export default class Second extends Component {
         'Hola ']
     }
     this._redirect = this._redirect.bind(this);
+    this.spinValue = new Animated.Value(0);
+    this.spin = this.spin.bind(this);
   }
   /**
 	 * Se utiliza para inicializar el comportamiento del boton de atras.
@@ -42,12 +46,30 @@ export default class Second extends Component {
 	 * @method componentWillMount
 	 */
   componentWillMount() {
-    BackAndroid.addEventListener('hardwareBackPress',  () => {
+    BackAndroid.addEventListener('hardwareBackPress', () => {
       this._redirect();
       return true;
     });
   }
+  componentDidMount() {
+    this.spin()
+  }
+  spin() {
+    this.spinValue.setValue(0)
+    Animated.timing(
+      this.spinValue,
+      {
+        toValue: 1,
+        duration: 4000,
+        easing: Easing.linear
+      }
+    ).start(() => this.spin())
+  }
   render() {
+    const spin = this.spinValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['0deg', '360deg']
+    })
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
@@ -60,6 +82,16 @@ export default class Second extends Component {
             <Text style={styles.buttonText}>{'< Regresar'}</Text>
           </TouchableHighlight>
         </View>
+
+        <Animated.Image
+          style={{
+            marginTop:10,
+            width: 57,
+            height: 50,
+            transform: [{ rotate: spin }]
+          }}
+          source={{ uri: 'https://s3.amazonaws.com/media-p.slid.es/uploads/alexanderfarennikov/images/1198519/reactjs.png' }}
+          />
       </View>
     );
   }
